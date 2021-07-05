@@ -9,14 +9,23 @@ using namespace std;
 void simulator::read() {
     RAM.read();
 }
+void simulator::Hazard_detect() {
+    if ()
+}
 void simulator::IF() {
     registor.fetched_instruct = RAM.mem[pc] + (RAM.mem[pc + 1] << 8) + (RAM.mem[pc + 2] << 16) + (RAM.mem[pc + 3] << 24);
     pc += 4;
 }
 void simulator::ID() {
+    if (registor.fetched_instruct == 0x0ff00513){
+        //cout << (((unsigned int)registor.reg[10]) & 255u);
+        end = true;
+        return;
+    }
     registor.decode();
 //    cout << "opt= " << registor.opt << " rd= " << registor.rd << " rs1= " << registor.rs1 <<
 //    " rs2= " << registor.rs2 << " imme= " << registor.imme << " branch= " << registor.branch <<endl;
+    IF();
 }
 int simulator::sext(const int &im,const int &maxw) {//maxw 0-based
     if (im < 0)return im;
@@ -30,6 +39,7 @@ int simulator::sext(const int &im,const int &maxw) {//maxw 0-based
     return ans;
 }
 void simulator::EX(int option) {
+    ex_result.opt = registor.opt;
     switch (option) {
         case 55:{//lui
             //registor.reg[registor.rd] = registor.imme;
@@ -358,6 +368,7 @@ void simulator::EX(int option) {
         }
         default:break;
     }
+    ID();
 }
 void simulator::MEM(int option) {
     switch (option) {
@@ -437,8 +448,10 @@ void simulator::MEM(int option) {
             break;
         }
     }
+    EX(registor.opt);
 }
 void simulator::WB(int option) {
+    mem_data.opt = ex_result.opt;
     switch (option) {
         case 55:case 23:case 111:case 103:case 19:case 51:{//lui//auipc//jal
             registor.reg[mem_data.rd] = mem_data.imme;
@@ -478,22 +491,57 @@ void simulator::WB(int option) {
             break;
         }
     }
+    MEM(ex_result.opt);
+}
+void simulator::IF_ID() {
+    ID();
+    IF();
+}
+void simulator::ID_EX() {
+    EX(registor.opt);
+    ID();
+}
+void simulator::EX_MEM() {
+    MEM(ex_result.opt);
+    EX(registor.opt);
+}
+void simulator::MEM_WB() {
+    WB(mem_data.opt);
+    MEM(ex_result.opt);
 }
 void simulator::run() {
     int j = 1;
-    while (true){
-        IF();
-        ID();
-        if (registor.fetched_instruct == 0x0ff00513){
-            cout << (((unsigned int)registor.reg[10]) & 255u);
-            break;
-        }
-        EX(registor.opt);
-        MEM(registor.opt);
-        WB(registor.opt);
+//    while (true){
+//    IF();
+//    ID();
+//    EX(registor.opt);
+//    MEM(ex_result.opt);
+//    while (!end)WB(mem_data.opt);
+    IF();
+    while (!end){
+        MEM_WB();
+        EX_MEM();
+        ID_EX();
+        IF_ID();
+    }
+    WB(mem_data.opt);
+    MEM(ex_result.opt);
+    EX(registor.opt);
+    WB(mem_data.opt);
+    MEM(ex_result.opt);
+    WB(mem_data.opt);
+    cout << (((unsigned int)registor.reg[10]) & 255u);
+//        ID();
+//        if (registor.fetched_instruct == 0x0ff00513){
+//            cout << (((unsigned int)registor.reg[10]) & 255u);
+//            break;
+//        }
+//        EX(registor.opt);
+//        MEM(registor.opt);
+//        WB(registor.opt);
 //        cout << j++ << ' ' << "pc = " << pc << ' ' << "loa=" << registor.l_or_r << ' ' << registor.opt << ' ' << registor.branch << ' ' << ' ' << registor.rd << ' ' << registor.rs1 << ' ' << registor.rs2 << endl;
 //        for (int i = 0; i < 32; ++i) {
 //            cout << "reg[" << i << "]=" << registor.reg[i] << endl;
 //        }
-    }
+//    }
 }

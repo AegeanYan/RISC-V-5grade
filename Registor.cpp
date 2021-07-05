@@ -7,6 +7,9 @@ void Registor::decode() {
     if (fetched_instruct == 0)return;
     else{
         opt = fetched_instruct & 127;
+        rd = -1;
+        rs1 = -1;
+        rs2 = -1;
         switch (opt) {
             case 55:case 23:{
                 branch = (fetched_instruct >> 12) & 7;
@@ -90,30 +93,31 @@ void Registor::decode() {
                 }
                 break;
             }
-            case 15:{
-                branch = (fetched_instruct >> 12) & 7;
-                if (branch == 0){
-                    succ = (fetched_instruct >> 20) & 31;
-                    pred = (fetched_instruct >> 25) & 31;//不确定，这个操作的pred到底是什么，不一定是5位
-                    l_or_r = 0;//0代表fence，1代表fence.i
-                } else{
-                    succ = 0;
-                    pred = 0;
-                    l_or_r = 1;
-                }
-                break;
-            }
-            case 115:{
-                branch = (fetched_instruct >> 12) & 7;
-                rd = (fetched_instruct >> 7) & 31;
-                rs1 = (fetched_instruct >> 15) & 31;
-                csr = (fetched_instruct >> 20);
-                if (branch == 0){
-                    if (csr == 0)l_or_r = 0;
-                    else l_or_r = 1;//0代表ecall，1代表ebreak
-                }
-                break;
-            }
+//            case 15:{
+//                branch = (fetched_instruct >> 12) & 7;
+//                if (branch == 0){
+//                    succ = (fetched_instruct >> 20) & 31;
+//                    pred = (fetched_instruct >> 25) & 31;//不确定，这个操作的pred到底是什么，不一定是5位
+//                    l_or_r = 0;//0代表fence，1代表fence.i
+//                } else{
+//                    succ = 0;
+//                    pred = 0;
+//                    l_or_r = 1;
+//                }
+//                break;
+//            }
+//            case 115:{
+//                branch = (fetched_instruct >> 12) & 7;
+//                rd = (fetched_instruct >> 7) & 31;
+//                rs1 = (fetched_instruct >> 15) & 31;
+//                csr = (fetched_instruct >> 20);
+//                if (branch == 0){
+//                    if (csr == 0)l_or_r = 0;
+//                    else l_or_r = 1;//0代表ecall，1代表ebreak
+//                }
+//                break;
+//            }
+            default:break;
         }
     }
 }

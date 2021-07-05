@@ -15,16 +15,19 @@ private:
     ALU alu;
     Memory RAM;
     int pc;
+    bool end;
     struct EX_Result{
     public:
         int rd;
         int imme;
         int branch;
         int pc;
+        int opt;
         EX_Result() = default;
     };
     struct MEM_Data{
     public:
+        int opt;
         int rd;
         int imme;
         int branch;
@@ -36,6 +39,7 @@ private:
 public:
     simulator() {
         pc = 0;
+        end = false;
     }
     void read();
     void IF();
@@ -44,6 +48,11 @@ public:
     void MEM(int option);
     void WB(int option);
     void run();
+    void IF_ID();
+    void ID_EX();
+    void EX_MEM();
+    void MEM_WB();
+    void Hazard_detect();
     static int sext(const int &im ,const int &maxw);
 };
 

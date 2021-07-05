@@ -15,16 +15,18 @@ public:
     int rd;
     int rs1;
     int rs2;
-    int zimm;
-    int csr;
-    int pred;
-    int succ;
+//    int zimm;
+//    int csr;
+//    int pred;
+//    int succ;
     int l_or_r;
     int shamt;
     int branch;
     Registor(){
         memset(reg , 0 , sizeof reg);
         fetched_instruct = 0;
+        imme = opt = rd = rs1 = rs2 = l_or_r = shamt = 0;
+        branch = -1;
     }
     void decode();
 };
