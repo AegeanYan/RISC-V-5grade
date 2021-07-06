@@ -9,6 +9,7 @@
 #include "Memory.h"
 #include "ALU.h"
 #include "Registor.h"
+#include <unordered_map>
 class simulator {
 private:
     Registor registor;
