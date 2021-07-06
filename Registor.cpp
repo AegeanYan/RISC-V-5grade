@@ -7,9 +7,9 @@ void Registor::decode() {
     if (fetched_instruct == 0)return;
     else{
         opt = fetched_instruct & 127;
-        rd = -1;
-        rs1 = -1;
-        rs2 = -1;
+        rd = 0;
+        rs1 = 0;
+        rs2 = 0;
         switch (opt) {
             case 55:case 23:{
                 branch = (fetched_instruct >> 12) & 7;
@@ -20,7 +20,7 @@ void Registor::decode() {
             case 111:{
                 rd = (fetched_instruct >> 7) & 31;
                 imme = 0;
-                branch = (fetched_instruct >> 12) & 7;
+                //branch = (fetched_instruct >> 12) & 7;
                 int a = 0 , b = 0 , c = 0 , d = 0;
                 a = (fetched_instruct >> 12) & ((1 << 8) - 1);
                 b = (fetched_instruct >> 20) & 1;
@@ -70,6 +70,7 @@ void Registor::decode() {
             case 19:{
                 rd = (fetched_instruct >> 7) & 31;
                 rs1 = (fetched_instruct >> 15) & 31;
+                rs2 = 0;
                 branch = (fetched_instruct >> 12) & 7;
                 int div = (fetched_instruct >> 12) & 7;
                 switch (div) {

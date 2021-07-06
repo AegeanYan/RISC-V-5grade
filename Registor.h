@@ -15,6 +15,7 @@ public:
     int rd;
     int rs1;
     int rs2;
+    int pc;
 //    int zimm;
 //    int csr;
 //    int pred;
@@ -25,7 +26,7 @@ public:
     Registor(){
         memset(reg , 0 , sizeof reg);
         fetched_instruct = 0;
-        imme = opt = rd = rs1 = rs2 = l_or_r = shamt = 0;
+        pc = imme = opt = rd = rs1 = rs2 = l_or_r = shamt = 0;
         branch = -1;
     }
     void decode();

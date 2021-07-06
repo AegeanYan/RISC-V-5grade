@@ -7,11 +7,13 @@
 
 
 class ALU {
+public:
     bool overflow;
     bool zero;
     bool negative;
+    bool flag;
 public:
-    ALU():overflow(false),zero(false),negative(false){};
+    ALU():overflow(false),zero(false),negative(false),flag(false){};
 };
 
 
