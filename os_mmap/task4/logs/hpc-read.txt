@@ -1,0 +1,7 @@
+step: 8192 bytes syscall read: 0.030 s mmap read: 0.083 s
+step: 4096 bytes syscall read: 0.059 s mmap read: 0.031 s
+step: 2048 bytes syscall read: 0.091 s mmap read: 0.033 s
+step: 1024 bytes syscall read: 0.166 s mmap read: 0.033 s
+step: 512 bytes syscall read: 0.304 s mmap read: 0.030 s
+step: 256 bytes syscall read: 0.601 s mmap read: 0.031 s
+step: 128 bytes syscall read: 1.173 s mmap read: 0.034 s

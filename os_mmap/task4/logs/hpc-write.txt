@@ -1,0 +1,7 @@
+step: 8192 bytes syscall write: 0.046 s mmap write: 1.059 s
+step: 4096 bytes syscall write: 0.241 s mmap write: 1.055 s
+step: 2048 bytes syscall write: 0.789 s mmap write: 1.164 s
+step: 1024 bytes syscall write: 2.223 s mmap write: 1.357 s
+step: 512 bytes syscall write: 5.779 s mmap write: 1.274 s
+step: 256 bytes syscall write: 14.293 s mmap write: 1.151 s
+step: 128 bytes syscall write: 33.927 s mmap write: 1.098 s
